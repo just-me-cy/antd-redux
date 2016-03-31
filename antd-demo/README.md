@@ -1,25 +1,25 @@
-# antd-demo
+# antd-redux-demo
 
-## Environment
+a demo for antd and redux. Not yet finished...
 
-```
-node >= 4
-```
+# Requirements
+- node ^5.0.0
+- npm ^3.0.0
 
-## Code Style
+# Getting Started
 
-https://github.com/airbnb/javascript
-
-## Develop
+* Just clone the repo and install the necessary node modules
 
 ```
-npm run dev
+$ git clone https://github.com/just-me-cy/antd-redux.git
+$ cd antd-redux
+$ npm install 
+$ npm run dev 
 ```
-
-访问 http://127.0.0.1:8989 
-
-## Build
+* you should start server to apply data
 
 ```
-npm run build
+node server
 ```
+* open your browser http://localhost:8989/#/product
+
