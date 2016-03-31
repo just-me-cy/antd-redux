@@ -19,7 +19,7 @@ $ npm run dev
 * you should start server to apply data
 
 ```
-node server
+$ node server
 ```
 * open your browser http://localhost:8989/#/product
 
