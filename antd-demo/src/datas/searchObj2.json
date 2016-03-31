@@ -1,0 +1,22 @@
+{
+	"products":[{
+	  "id":"2",
+	  "name":"人保苏鑫豪华版C款",
+	  "mainCata":"健康保险",
+	  "addTime":"2016-03-30",
+	  "status":"新建",
+	  "statusCode":"new",
+	  "op":["确认","修改","查看佣金"]
+	},{
+	  "id":"2",
+	  "name":"新一站添金计划3号",
+	  "mainCata":"理财险",
+	  "addTime":"2016-03-30",
+	  "status":"新建",
+	  "statusCode":"new",
+	  "op":["确认","修改","查看佣金"]
+	}],
+	"curPage":1,
+	"totalPage":42,
+	"totalRecord":827
+}
