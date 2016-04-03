@@ -3,12 +3,12 @@
  */
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { selectSubreddit, fetchPostsIfNeeded, invalidateSubreddit } from '../actions/actions-reddit';
+import { selectSubreddit, fetchPostsIfNeeded, invalidateSubreddit } from '../actions/reddit';
 import Picker from '../components/Picker';
 import Posts from '../components/Posts';
 import { Button,Row, Col } from 'antd';
 
-class AsyncApp extends Component {
+class Reddit extends Component {
   constructor(props) {
     super(props)
     this.handleChange = this.handleChange.bind(this)
@@ -40,10 +40,9 @@ class AsyncApp extends Component {
   }
 
   render () {
-    const { selectedSubreddit, posts, isFetching, lastUpdated } = this.props
+    const { selectedSubreddit, posts, isFetching, lastUpdated } = this.props;
     return (
       <Row  type="flex" justify="center" style={{marginTop:30}}>
-
       <div>
         <Picker value={selectedSubreddit}
                 onChange={this.handleChange}
@@ -78,7 +77,7 @@ class AsyncApp extends Component {
   }
 }
 
-AsyncApp.propTypes = {
+Reddit.propTypes = {
   selectedSubreddit: PropTypes.string.isRequired,
   posts: PropTypes.array.isRequired,
   isFetching: PropTypes.bool.isRequired,
@@ -87,15 +86,8 @@ AsyncApp.propTypes = {
 }
 
 function mapStateToProps(state) {
-  const { selectedSubreddit, postsBySubreddit } = state
-  const {
-    isFetching,
-    lastUpdated,
-    items: posts
-    } = postsBySubreddit[selectedSubreddit] || {
-    isFetching: true,
-    items: []
-  }
+  const { selectedSubreddit, postsBySubreddit } = state.redditReducer;
+  const { isFetching, lastUpdated, items: posts } = postsBySubreddit[selectedSubreddit] || { isFetching: true, items: []};
 
   return {
     selectedSubreddit,
@@ -105,4 +97,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(AsyncApp)
+export default connect(mapStateToProps)(Reddit)

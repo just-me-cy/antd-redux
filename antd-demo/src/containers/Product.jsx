@@ -1,16 +1,19 @@
 /**
- * Created by chenyao0913 on 2016/3/30.
+ * Created by chenyao on 2016/3/30.
+ * product container
  */
-import React, { Component, PropTypes } from 'react';
+import React, { Component, PropTypes} from 'react';
 import { connect } from 'react-redux';
-import { request, receive,search, setVisibilityFilter ,fetchProsIfNeeded ,Filters} from '../actions/actionsPro';
-import Products from '../components/Products';
+import { request, receive, search, setVisibilityFilter, fetchProsIfNeeded } from '../actions/product';
+
+import { Filters } from '../constant/product';
+import Products from '../components/Product';
 import SearchBar from '../components/SearchBar';
 import FilterBar from '../components/FilterBar';
-import { Button,Row, Col } from 'antd';
+import { Button, Row, Col} from 'antd';
 
-class ProApp extends Component {
-  constructor(props){
+class Product extends Component {
+  constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
 
@@ -19,7 +22,7 @@ class ProApp extends Component {
   componentDidMount() {
 
     const { dispatch, search } = this.props;
-    console.log("1:"+search);
+    console.log("1:" + search);
     dispatch(fetchProsIfNeeded(search))
   }
 
@@ -27,7 +30,7 @@ class ProApp extends Component {
     console.log(2)
     console.log(nextProps);
     if (nextProps.search !== this.props.search) {
-      const { dispatch, search } = nextProps;
+      const {dispatch, search} = nextProps;
       dispatch(fetchProsIfNeeded(search))
     }
   }
@@ -36,10 +39,10 @@ class ProApp extends Component {
     this.props.dispatch(search(nextSearchObj))
   }
 
- render (){
-   const {search, pros,visiblePros, isFetching, visibilityFilter} = this.props;
-   return (
-     <Row  type="flex" justify="center" style={{marginTop:30}}>
+  render() {
+    const {search, pros, visiblePros, isFetching, visibilityFilter} = this.props;
+    return (
+      <Row  type="flex" justify="center" style={{marginTop:30}}>
        <Col span="20">
 
          <SearchBar onSubmit={this.handleChange} />
@@ -63,12 +66,12 @@ class ProApp extends Component {
          }
        </Col>
      </Row>
-   )
- }
+    )
+  }
 }
 
-ProApp.propTypes = {
-  search:PropTypes.string.isRequired,
+Product.propTypes = {
+  search: PropTypes.string.isRequired,
   visiblePros: PropTypes.array.isRequired,
   isFetching: PropTypes.bool.isRequired,
   dispatch: PropTypes.func.isRequired
@@ -94,16 +97,16 @@ function selectPros(pros, filter) {
 }
 
 function mapStateToProps(state) {
-  const {visibilityFilter, productsByQuery, search } = state
-  const {isFetching, items:pros} = productsByQuery[search] || {isFetching: true,items: []}
+  const { visibilityFilter, productsByQuery, search } = state.productReducer;
+  const { isFetching, items: pros } = productsByQuery[search] || { isFetching: true, items: [] };
 
   return {
-    visibilityFilter:state.visibilityFilter,
-    visiblePros:selectPros(pros,visibilityFilter),
+    visibilityFilter: state.visibilityFilter,
+    visiblePros: selectPros(pros, visibilityFilter),
     search,
     pros,
     isFetching
   }
 }
 
-export default connect(mapStateToProps)(ProApp)
+export default connect(mapStateToProps)(Product);

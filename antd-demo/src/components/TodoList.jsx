@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import {Row, Col, Icon} from 'antd';
-import Todo from './Todo';
+import TodoItem from './TodoItem';
 
 const TodoList   = React.createClass({
   render() {
@@ -10,7 +10,7 @@ const TodoList   = React.createClass({
         <Col span='8'>
           <ul>
             {this.props.todos.map((todo, index) =>
-                <Todo {...todo}
+                <TodoItem {...todo}
                   key={index}
                   onClick={() => this.props.onTodoClick(index)} />
             )}

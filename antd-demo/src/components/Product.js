@@ -1,8 +1,11 @@
-/**
- * Created by chenyao0913 on 2016/3/28.
- */
-import React, { PropTypes, Component } from 'react'
-import {Row,Col,Table,Button,Icon} from 'antd';
+import React, {
+  PropTypes, Component
+}
+from 'react'
+import {
+  Row, Col, Table, Button, Icon
+}
+from 'antd';
 
 const columns = [{
   title: '产品ID',
@@ -11,7 +14,7 @@ const columns = [{
   render(text) {
     return <a href="#">{text}</a>;
   }
-},{
+}, {
   title: '产品名称',
   dataIndex: 'name',
   key: 'name'
@@ -19,15 +22,15 @@ const columns = [{
   title: '产品主分类',
   dataIndex: 'mainCata',
   key: 'mainCata'
-},{
-  title:'添加时间',
-  dataIndex:'addTime',
-  key:'addTime'
 }, {
-  title:'产品状态',
-  dataIndex:'status',
-  key:'status'
-},{
+  title: '添加时间',
+  dataIndex: 'addTime',
+  key: 'addTime'
+}, {
+  title: '产品状态',
+  dataIndex: 'status',
+  key: 'status'
+}, {
   title: '操作',
   key: 'op',
   render(text, record) {
@@ -43,8 +46,8 @@ const columns = [{
 export default class Products extends Component {
   render() {
     return (
-            <Table columns={columns} dataSource={this.props.pros} />
-          )
+      <Table columns={columns} dataSource={this.props.pros} />
+    )
   }
 }
 

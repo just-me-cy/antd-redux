@@ -6,10 +6,10 @@ import { Router, Route, Link,browserHistory } from 'react-router';
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
 
-const Sider = React.createClass({
+const SiderMenu = React.createClass({
   getInitialState() {
     return {
-      current: 'product'
+      current: 'showForm'
     };
   },
   handleClick(e) {
@@ -29,17 +29,12 @@ const Sider = React.createClass({
             defaultOpenKeys={['sub1','showForm']}
             selectedKeys={[this.state.current]}
             mode="inline">
-        <SubMenu key="sub1" title={<span><Icon type="mail" /><span>导航一</span></span>}>
-          <MenuItemGroup title="控件">
+        <SubMenu key="sub1" title={<span><Icon type="mail" /><span>菜单</span></span>}>
             <Menu.Item key="showDatePicker"><Link to='/showDatePicker'>时间控件</Link></Menu.Item>
             <Menu.Item key="showForm"><Link to='/myForm'>表单控件</Link></Menu.Item>
-          </MenuItemGroup>
-          <MenuItemGroup title="reduxDemo">
-            <Menu.Item key="3"><Link to='/inbox/messages/1'>inbox</Link></Menu.Item>
             <Menu.Item key="appTodo"><Link to='/appTodo'>AppTodo</Link></Menu.Item>
             <Menu.Item key="redit"><Link to='/reddit'>reddit</Link></Menu.Item>
             <Menu.Item key="product"><Link to='/product'>product</Link></Menu.Item>
-          </MenuItemGroup>
         </SubMenu>
         <SubMenu key="sub2" title={<span><Icon type="appstore" /><span>导航二</span></span>}>
           <Menu.Item key="5">选项5</Menu.Item>
@@ -59,4 +54,4 @@ const Sider = React.createClass({
     );
   }
 });
-export default Sider;
+export default SiderMenu;

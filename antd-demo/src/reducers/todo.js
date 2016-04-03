@@ -1,12 +1,18 @@
 /**
  * Created by chenyao0913 on 2016/3/25.
  */
-import { combineReducers } from 'redux';
-import { ADD_TODO, COMPLETE_TODO, SET_VISIBILITY_FILTER, VisibilityFilters } from '../actions/actions';
+import {
+  combineReducers
+}
+from 'redux';
+import {
+  ADD_TODO, COMPLETE_TODO, SET_VISIBILITY_FILTER, VisibilityFilters
+}
+from '../constant/todo';
 
-import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
-
-const { SHOW_ALL } = VisibilityFilters;
+const {
+  SHOW_ALL
+} = VisibilityFilters;
 
 function visibilityFilter(state = SHOW_ALL, action) {
   switch (action.type) {
@@ -39,8 +45,7 @@ function todos(state = [], action) {
 
 const todoApp = combineReducers({
   visibilityFilter,
-  todos,
-  routing: routerReducer
+  todos
 });
 
 export default todoApp;

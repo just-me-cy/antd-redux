@@ -1,11 +1,15 @@
 /**
  * Created by chenyao0913 on 2016/3/28.
  */
-import { combineReducers } from 'redux'
 import {
-  SELECT_SUBREDDIT, INVALIDATE_SUBREDDIT ,
+  combineReducers
+}
+from 'redux';
+import {
+  SELECT_SUBREDDIT, INVALIDATE_SUBREDDIT,
   REQUEST_POSTS, RECEIVE_POSTS
-  } from '../actions/actions-reddit';
+}
+from '../constant/reddit';
 
 function selectedSubreddit(state = 'reactjs', action) {
   switch (action.type) {
@@ -22,7 +26,7 @@ function posts(state = {
   items: []
 }, action) {
   switch (action.type) {
-    case INVALIDATE_SUBREDDIT :
+    case INVALIDATE_SUBREDDIT:
       return Object.assign({}, state, {
         didInvalidate: true
       })
@@ -43,9 +47,9 @@ function posts(state = {
   }
 }
 
-function postsBySubreddit(state = { }, action) {
+function postsBySubreddit(state = {}, action) {
   switch (action.type) {
-    case INVALIDATE_SUBREDDIT :
+    case INVALIDATE_SUBREDDIT:
     case RECEIVE_POSTS:
     case REQUEST_POSTS:
       return Object.assign({}, state, {
@@ -56,9 +60,9 @@ function postsBySubreddit(state = { }, action) {
   }
 }
 
-const rootReducer = combineReducers({
-    postsBySubreddit,
-    selectedSubreddit
+const redditReducer = combineReducers({
+  postsBySubreddit,
+  selectedSubreddit
 })
 
-export default rootReducer
+export default redditReducer;

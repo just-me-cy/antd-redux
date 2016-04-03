@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import {Button,Row,Col} from 'antd';
-import Todo from './Todo';
 
 const Footer = React.createClass({
   renderFilter(filter, name) {

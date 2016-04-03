@@ -1,9 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { addTodo, completeTodo, setVisibilityFilter, VisibilityFilters } from '../actions/actions';
-import AddTodo from './AddTodo';
-import TodoList from './TodoList';
-import Footer from './Footer';
+import {VisibilityFilters} from '../constant/todo';
+import {addTodo, completeTodo, setVisibilityFilter} from '../actions/todo';
+import AddTodo from '../components/AddTodo';
+import TodoList from '../components/TodoList';
+import Footer from '../components/Footer';
 
 
 const AppTodo  = React.createClass({
@@ -57,9 +58,10 @@ function selectTodos(todos, filter) {
 // 基于全局 state ，哪些是我们想注入的 props ?
 // 注意：使用 https://github.com/faassen/reselect 效果更佳。
 function select(state) {
+  const {visibilityFilter,todos} = state.todoReducer;
   return {
-    visibleTodos: selectTodos(state.todos, state.visibilityFilter),
-    visibilityFilter: state.visibilityFilter
+    visibleTodos: selectTodos(todos, visibilityFilter),
+    visibilityFilter: visibilityFilter
   };
 }
 
