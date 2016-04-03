@@ -1,6 +1,6 @@
 # antd-redux-demo
 
-a demo for antd and redux. Not yet finished...
+a demo for antd and redux. 
 
 # Requirements
 - node ^5.0.0
@@ -21,5 +21,5 @@ $ npm run dev
 ```
 $ node server
 ```
-* open your browser http://localhost:8989/#/product
+* open your browser http://localhost:8989/
 
