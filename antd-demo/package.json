@@ -20,7 +20,8 @@
     "react-router-redux": "^4.0.0",
     "redux": "^3.3.1",
     "redux-logger": "^2.6.1",
-    "redux-thunk": "^2.0.1"
+    "redux-thunk": "^2.0.1",
+    "babel-register": "^6.7.2"
   },
   "devDependencies": {
     "dora": "0.3.x",
@@ -32,14 +33,17 @@
     "eslint-config-airbnb": "6.x",
     "eslint-plugin-react": "4.x",
     "pre-commit": "1.x",
-    "redux-devtools": "^3.1.1"
+    "redux-devtools": "^3.1.1",
+    "babel-register": "^6.7.2",
+    "babel-preset-react": "^6.5.0",
+    "babel": "^6.5.2"
   },
   "pre-commit": [
     "lint"
   ],
   "scripts": {
     "start": "npm run dev ",
-    "serverStart":"node ./bin/www",
+    "serverStart": "node ./bin/www",
     "dev": "dora -p 8001 --plugins webpack,hmr,proxy,livereload?enableJs=false",
     "lint": "eslint --ext .js,.jsx src",
     "build": "atool-build -o ./dist/${npm_package_family}/${npm_package_name}/${npm_package_version}"
