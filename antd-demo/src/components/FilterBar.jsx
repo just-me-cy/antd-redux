@@ -1,27 +1,40 @@
 import React, { Component, PropTypes } from 'react';
-import {Button,Row,Col} from 'antd';
+import { Button, Row, Col } from 'antd';
 
 export default class FilterBar extends Component {
+  static propTypes = {
+    onFilterChange: PropTypes.func.isRequired,
+    filter: PropTypes.oneOf([
+      'SHOW_ALL',
+      'SHOW_SHELVE',
+      'SHOW_OFF_SHELVE',
+      'SHOW_NEW',
+      'SHOW_CONFIRM',
+      'SHOW_CHANGE',
+      'SHOW_OUT_OF_SALE',
+    ]).isRequired,
+  }
 
   renderFilter(filter, name) {
     if (filter === this.props.filter) {
-      return <Button type='primary' size='small' style={{marginRight:5}}>{name}</Button>;
+      return <Button type="primary" size="small" style={{ marginRight: 5 }}>{name}</Button>;
     }
 
     return (
-      <Button size='small' style={{marginRight:5}} onClick={e => {
+      <Button size="small" style={{ marginRight: 5 }} onClick={e => {
         e.preventDefault();
         this.props.onFilterChange(filter);
-      }}>
+      }}
+      >
         {name}
       </Button>
-    )
+    );
   }
 
-   render() {
+  render() {
     return (
-      <Row style={{marginTop:20}} >
-        <Col span='14' push='6'>
+      <Row style={{ marginTop: 20 }} >
+        <Col span="14" push="6">
         显示：
         {this.renderFilter('SHOW_ALL', '全部')}
         {this.renderFilter('SHOW_SHELVE', '上架')}
@@ -34,18 +47,4 @@ export default class FilterBar extends Component {
       </Row>
     );
   }
-
 }
-
-FilterBar.propTypes = {
-  onFilterChange: PropTypes.func.isRequired,
-  filter: PropTypes.oneOf([
-    'SHOW_ALL',
-    'SHOW_SHELVE',
-    'SHOW_OFF_SHELVE',
-    'SHOW_NEW',
-    'SHOW_CONFIRM',
-    'SHOW_CHANGE',
-    'SHOW_OUT_OF_SALE'
-  ]).isRequired
-};

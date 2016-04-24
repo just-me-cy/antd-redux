@@ -10,14 +10,16 @@ export default class Picker extends Component {
   render() {
     const { value, onChange, options } = this.props;
 
-    return (<div>
+    return (
+      <div>
       <Select defaultValue={value} style={{ width: 120 }} onChange={value => onChange(value)}>
         {options.map(option =>
             <Option value={option} key={option}>{option}</Option>
           )
         }
       </Select>
-    </div>)
+    </div>
+    );
   }
 }
 
@@ -26,5 +28,5 @@ Picker.propTypes = {
     PropTypes.string.isRequired
   ).isRequired,
   value: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired
-}
+  onChange: PropTypes.func.isRequired,
+};

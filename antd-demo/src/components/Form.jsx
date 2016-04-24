@@ -1,4 +1,4 @@
-import React from 'react';
+import React , { Component,PropTypes }from 'react';
 import { Button, Form, Input, Row, Col } from 'antd';
 
 const createForm = Form.create;
@@ -8,10 +8,15 @@ function noop() {
   return false;
 }
 
-const FormDemo = React.createClass({
+class FormDemo extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleReset = this.handleReset.bind(this);
+  }
+
   getValidateStatus(field) {
     const { isFieldValidating, getFieldError, getFieldValue } = this.props.form;
-
     if (isFieldValidating(field)) {
       return 'validating';
     } else if (!!getFieldError(field)) {
@@ -19,24 +24,23 @@ const FormDemo = React.createClass({
     } else if (getFieldValue(field)) {
       return 'success';
     }
-  },
+  }
 
   handleReset(e) {
     e.preventDefault();
     this.props.form.resetFields();
-  },
+  }
 
   handleSubmit(e) {
     e.preventDefault();
     this.props.form.validateFields((errors, values) => {
       if (!!errors) {
-        console.log('Errors in form!!!');
         return;
       }
       console.log('Submit!!!');
       console.log(values);
     });
-  },
+  }
 
   userExists(rule, value, callback) {
     if (!value) {
@@ -50,7 +54,7 @@ const FormDemo = React.createClass({
         }
       }, 800);
     }
-  },
+  }
 
   checkPass(rule, value, callback) {
     const { validateFields } = this.props.form;
@@ -58,7 +62,7 @@ const FormDemo = React.createClass({
       validateFields(['rePasswd']);
     }
     callback();
-  },
+  }
 
   checkPass2(rule, value, callback) {
     const { getFieldValue } = this.props.form;
@@ -67,7 +71,7 @@ const FormDemo = React.createClass({
     } else {
       callback();
     }
-  },
+  }
 
   render() {
     const { getFieldProps, getFieldError, isFieldValidating } = this.props.form;
@@ -88,8 +92,9 @@ const FormDemo = React.createClass({
           { type: 'email', message: '请输入正确的邮箱地址' },
         ],
         trigger: ['onBlur', 'onChange'],
-      }]
+      }],
     });
+
     const passwdProps = getFieldProps('passwd', {
       rules: [
         { required: true, whitespace: true, message: '请填写密码' },
@@ -116,12 +121,12 @@ const FormDemo = React.createClass({
     };
 
     return (
-      <Row type="flex" justify="center" style={{marginTop:30}}>
-        <Col span="18" style={{textAlign:'center',fontWeight:'bold'}}>
+      <Row type="flex" justify="center" style={{ marginTop: 30 }}>
+        <Col span="18" style={{ textAlign: 'center',fontWeight: 'bold' }}>
           <label>用户注册</label>
         </Col>
         <Col span="18">
-          <Form horizontal form={this.props.form} style={{marginTop:30}}>
+          <Form horizontal form={ this.props.form } style={{ marginTop: 30 }}>
             <FormItem
               {...formItemLayout}
               label="用户名："
@@ -133,42 +138,48 @@ const FormDemo = React.createClass({
             <FormItem
               {...formItemLayout}
               label="邮箱："
-              hasFeedback>
+              hasFeedback
+            >
               <Input {...emailProps} type="email" placeholder="onBlur 与 onChange 相结合" />
             </FormItem>
 
             <FormItem
               {...formItemLayout}
               label="密码："
-              hasFeedback>
+              hasFeedback
+            >
               <Input {...passwdProps} type="password" autoComplete="off"
-                                      onContextMenu={noop} onPaste={noop} onCopy={noop} onCut={noop} />
+                onContextMenu={noop} onPaste={noop} onCopy={noop} onCut={noop}
+              />
             </FormItem>
 
             <FormItem
               {...formItemLayout}
               label="确认密码："
-              hasFeedback>
+              hasFeedback
+            >
               <Input {...rePasswdProps} type="password" autoComplete="off" placeholder="两次输入密码保持一致"
-                                        onContextMenu={noop} onPaste={noop} onCopy={noop} onCut={noop} />
+                onContextMenu={noop} onPaste={noop} onCopy={noop} onCut={noop}
+              />
             </FormItem>
 
             <FormItem
               {...formItemLayout}
-              label="备注：">
+              label="备注："
+            >
               <Input {...textareaProps} type="textarea" placeholder="随便写" id="textarea" name="textarea" />
             </FormItem>
 
             <FormItem wrapperCol={{ span: 12, offset: 7 }}>
-              <Button type="primary" onClick={this.handleSubmit.bind(this)}>确定</Button>
+              <Button type="primary" onClick={this.handleSubmit}>确定</Button>
               &nbsp;&nbsp;&nbsp;
-              <Button type="ghost" onClick={this.handleReset.bind(this)}>重置</Button>
+              <Button type="ghost" onClick={this.handleReset}>重置</Button>
             </FormItem>
           </Form>
           </Col>
         </Row>
     );
   }
-});
+}
 
 export default createForm()(FormDemo);

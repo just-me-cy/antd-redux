@@ -1,40 +1,39 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Menu, Icon } from 'antd';
-
-import { Router, Route, Link,browserHistory } from 'react-router';
+import { Link } from 'react-router';
 
 const SubMenu = Menu.SubMenu;
-const MenuItemGroup = Menu.ItemGroup;
 
-const SiderMenu = React.createClass({
+class SiderMenu extends Component {
+  constructor(props) {
+    super(props);
+    this.handleClick = this.handleClick.bind(this);
+  }
   getInitialState() {
     return {
-      current: 'showForm'
+      current: 'showForm',
     };
-  },
+  }
   handleClick(e) {
     this.setState({
-      current: e.key
+      current: e.key,
     });
-    //if(e.key === '4'){
-    //  browserHistory.pushState(null,'inbox/messages/1');//通过pushState也可以控件跳转
-    //}
-
-  },
+  }
   render() {
     return (
       <Menu
-            onClick={this.handleClick}
-            style={{ width: '100%' }}
-            defaultOpenKeys={['sub1','showForm']}
-            selectedKeys={[this.state.current]}
-            mode="inline">
+        onClick={this.handleClick}
+        style={{ width: '100%' }}
+        defaultOpenKeys={['sub1', 'showForm']}
+        selectedKeys={[this.state.current]}
+        mode="inline"
+      >
         <SubMenu key="sub1" title={<span><Icon type="mail" /><span>菜单</span></span>}>
-            <Menu.Item key="showDatePicker"><Link to='/showDatePicker'>时间控件</Link></Menu.Item>
-            <Menu.Item key="showForm"><Link to='/myForm'>表单控件</Link></Menu.Item>
-            <Menu.Item key="appTodo"><Link to='/appTodo'>AppTodo</Link></Menu.Item>
-            <Menu.Item key="redit"><Link to='/reddit'>reddit</Link></Menu.Item>
-            <Menu.Item key="product"><Link to='/product'>product</Link></Menu.Item>
+            <Menu.Item key="showDatePicker"><Link to="/showDatePicker">时间控件</Link></Menu.Item>
+            <Menu.Item key="showForm"><Link to="/myForm">表单控件</Link></Menu.Item>
+            <Menu.Item key="appTodo"><Link to="/appTodo">AppTodo</Link></Menu.Item>
+            <Menu.Item key="redit"><Link to="/reddit">reddit</Link></Menu.Item>
+            <Menu.Item key="product"><Link to="/product">product</Link></Menu.Item>
         </SubMenu>
         <SubMenu key="sub2" title={<span><Icon type="appstore" /><span>导航二</span></span>}>
           <Menu.Item key="5">选项5</Menu.Item>
@@ -53,5 +52,5 @@ const SiderMenu = React.createClass({
       </Menu>
     );
   }
-});
+}
 export default SiderMenu;

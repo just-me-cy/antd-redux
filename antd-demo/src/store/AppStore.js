@@ -2,7 +2,7 @@
  * Created by chenyao0913 on 2016/3/30.
  */
 import {
-	createStore, applyMiddleware, combineReducers
+	createStore, applyMiddleware, combineReducers,
 }
 from 'redux';
 import thunkMiddleware from 'redux-thunk';
@@ -11,15 +11,15 @@ import productReducer from '../reducers/product';
 import redditReducer from '../reducers/reddit';
 import todoReducer from '../reducers/todo';
 import {
-	syncHistoryWithStore, routerReducer
+	syncHistoryWithStore, routerReducer,
 }
 from 'react-router-redux';
 
 const rootReducer = combineReducers({
-	productReducer,
-	redditReducer,
-	todoReducer,
-	routing: routerReducer
+  productReducer,
+  redditReducer,
+  todoReducer,
+  routing: routerReducer,
 });
 
 const loggerMiddleware = createLogger();
@@ -30,5 +30,5 @@ const createStoreWithMiddleware = applyMiddleware(
 )(createStore);
 
 export default function storePro(initialState) {
-	return createStoreWithMiddleware(rootReducer, initialState);
-};
+  return createStoreWithMiddleware(rootReducer, initialState);
+}

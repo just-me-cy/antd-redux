@@ -3,16 +3,16 @@
  */
 
 import {
-  combineReducers
+  combineReducers,
 }
 from 'redux';
 import {
-  REQUEST, RECEIVE, SEARCH, SET_FILTER, Filters
+  REQUEST, RECEIVE, SEARCH, SET_FILTER, Filters,
 }
 from '../constant/product';
 
 const {
-  SHOW_ALL
+  SHOW_ALL,
 } = Filters;
 
 function visibilityFilter(state = SHOW_ALL, action) {
@@ -24,7 +24,7 @@ function visibilityFilter(state = SHOW_ALL, action) {
   }
 }
 
-function search(state = 'searchObj1', action) {
+function search(state = '', action) {
   switch (action.type) {
     case SEARCH:
       return action.searchObj;
@@ -35,18 +35,18 @@ function search(state = 'searchObj1', action) {
 
 function products(state = {
   isFetching: false,
-  items: []
+  items: [],
 }, action) {
   switch (action.type) {
     case REQUEST:
       return Object.assign({}, state, {
-        isFetching: true
+        isFetching: true,
       });
     case RECEIVE:
       return Object.assign({}, state, {
         isFetching: false,
         items: action.pros,
-        lastUpdated: action.receivedAt
+        lastUpdated: action.receivedAt,
       });
     default:
       return state;
@@ -58,7 +58,7 @@ function productsByQuery(state = {}, action) {
     case REQUEST:
     case RECEIVE:
       return Object.assign({}, state, {
-        [action.searchObj]: products(state[action.searchObj], action)
+        [action.searchObj]: products(state[action.searchObj], action),
       });
     default:
       return state;
@@ -68,7 +68,7 @@ function productsByQuery(state = {}, action) {
 const productReducer = combineReducers({
   visibilityFilter,
   productsByQuery,
-  search
+  search,
 });
 
 export default productReducer;

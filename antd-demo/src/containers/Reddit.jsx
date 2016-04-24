@@ -6,48 +6,49 @@ import { connect } from 'react-redux';
 import { selectSubreddit, fetchPostsIfNeeded, invalidateSubreddit } from '../actions/reddit';
 import Picker from '../components/Picker';
 import Posts from '../components/Posts';
-import { Button,Row, Col } from 'antd';
+import { Button, Row } from 'antd';
 
 class Reddit extends Component {
   constructor(props) {
-    super(props)
-    this.handleChange = this.handleChange.bind(this)
-    this.handleRefreshClick = this.handleRefreshClick.bind(this)
+    super(props);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleRefreshClick = this.handleRefreshClick.bind(this);
   }
 
   componentDidMount() {
-    const { dispatch, selectedSubreddit } = this.props
-    dispatch(fetchPostsIfNeeded(selectedSubreddit))
+    const { dispatch, selectedSubreddit } = this.props;
+    dispatch(fetchPostsIfNeeded(selectedSubreddit));
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.selectedSubreddit !== this.props.selectedSubreddit) {
-      const { dispatch, selectedSubreddit } = nextProps
-      dispatch(fetchPostsIfNeeded(selectedSubreddit))
+      const { dispatch, selectedSubreddit } = nextProps;
+      dispatch(fetchPostsIfNeeded(selectedSubreddit));
     }
   }
 
   handleChange(nextSubreddit) {
-    this.props.dispatch(selectSubreddit(nextSubreddit))
+    this.props.dispatch(selectSubreddit(nextSubreddit));
   }
 
   handleRefreshClick(e) {
-    e.preventDefault()
+    e.preventDefault();
 
-    const { dispatch, selectedSubreddit } = this.props
-    dispatch(invalidateSubreddit(selectedSubreddit))
-    dispatch(fetchPostsIfNeeded(selectedSubreddit))
+    const { dispatch, selectedSubreddit } = this.props;
+    dispatch(invalidateSubreddit(selectedSubreddit));
+    dispatch(fetchPostsIfNeeded(selectedSubreddit));
   }
 
-  render () {
+  render() {
     const { selectedSubreddit, posts, isFetching, lastUpdated } = this.props;
     return (
-      <Row  type="flex" justify="center" style={{marginTop:30}}>
+      <Row type="flex" justify="center" style={{ marginTop: 30 }}>
       <div>
         <Picker value={selectedSubreddit}
-                onChange={this.handleChange}
-                options={[ 'reactjs', 'frontend' ]} />
-        <p style={{marginTop:10,marginBottom:10}}>
+          onChange={this.handleChange}
+          options={['reactjs', 'frontend']}
+        />
+        <p style={{ marginTop: 10, marginBottom: 10 }}>
           {lastUpdated &&
           <span>
               更新于： {new Date(lastUpdated).toLocaleTimeString()}.
@@ -55,7 +56,7 @@ class Reddit extends Component {
             </span>
           }
           {!isFetching &&
-          <Button type='primary' onClick={this.handleRefreshClick} size='small'>
+          <Button type="primary" onClick={this.handleRefreshClick} size="small" >
             刷新
           </Button>
           }
@@ -73,7 +74,7 @@ class Reddit extends Component {
         }
       </div>
         </Row>
-    )
+    );
   }
 }
 
@@ -82,19 +83,19 @@ Reddit.propTypes = {
   posts: PropTypes.array.isRequired,
   isFetching: PropTypes.bool.isRequired,
   lastUpdated: PropTypes.number,
-  dispatch: PropTypes.func.isRequired
-}
+  dispatch: PropTypes.func.isRequired,
+};
 
 function mapStateToProps(state) {
   const { selectedSubreddit, postsBySubreddit } = state.redditReducer;
-  const { isFetching, lastUpdated, items: posts } = postsBySubreddit[selectedSubreddit] || { isFetching: true, items: []};
+  const { isFetching, lastUpdated, items: posts } = postsBySubreddit[selectedSubreddit] || { isFetching: true, items: [] };
 
   return {
     selectedSubreddit,
     posts,
     isFetching,
-    lastUpdated
-  }
+    lastUpdated,
+  };
 }
 
-export default connect(mapStateToProps)(Reddit)
+export default connect(mapStateToProps)(Reddit);
