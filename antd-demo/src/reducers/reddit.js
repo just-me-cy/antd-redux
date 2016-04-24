@@ -2,48 +2,48 @@
  * Created by chenyao0913 on 2016/3/28.
  */
 import {
-  combineReducers
+  combineReducers,
 }
 from 'redux';
 import {
   SELECT_SUBREDDIT, INVALIDATE_SUBREDDIT,
-  REQUEST_POSTS, RECEIVE_POSTS
+  REQUEST_POSTS, RECEIVE_POSTS,
 }
 from '../constant/reddit';
 
 function selectedSubreddit(state = 'reactjs', action) {
   switch (action.type) {
     case SELECT_SUBREDDIT:
-      return action.subreddit
+      return action.subreddit;
     default:
-      return state
+      return state;
   }
 }
 
 function posts(state = {
   isFetching: false,
   didInvalidate: false,
-  items: []
+  items: [],
 }, action) {
   switch (action.type) {
     case INVALIDATE_SUBREDDIT:
       return Object.assign({}, state, {
-        didInvalidate: true
-      })
+        didInvalidate: true,
+      });
     case REQUEST_POSTS:
       return Object.assign({}, state, {
         isFetching: true,
-        didInvalidate: false
-      })
+        didInvalidate: false,
+      });
     case RECEIVE_POSTS:
       return Object.assign({}, state, {
         isFetching: false,
         didInvalidate: false,
         items: action.posts,
-        lastUpdated: action.receivedAt
-      })
+        lastUpdated: action.receivedAt,
+      });
     default:
-      return state
+      return state;
   }
 }
 
@@ -53,16 +53,16 @@ function postsBySubreddit(state = {}, action) {
     case RECEIVE_POSTS:
     case REQUEST_POSTS:
       return Object.assign({}, state, {
-        [action.subreddit]: posts(state[action.subreddit], action)
-      })
+        [action.subreddit]: posts(state[action.subreddit], action),
+      });
     default:
-      return state
+      return state;
   }
 }
 
 const redditReducer = combineReducers({
   postsBySubreddit,
-  selectedSubreddit
-})
+  selectedSubreddit,
+});
 
 export default redditReducer;

@@ -2,16 +2,16 @@
  * Created by chenyao0913 on 2016/3/25.
  */
 import {
-  combineReducers
+  combineReducers,
 }
 from 'redux';
 import {
-  ADD_TODO, COMPLETE_TODO, SET_VISIBILITY_FILTER, VisibilityFilters
+  ADD_TODO, COMPLETE_TODO, SET_VISIBILITY_FILTER, VisibilityFilters,
 }
 from '../constant/todo';
 
 const {
-  SHOW_ALL
+  SHOW_ALL,
 } = VisibilityFilters;
 
 function visibilityFilter(state = SHOW_ALL, action) {
@@ -28,15 +28,15 @@ function todos(state = [], action) {
     case ADD_TODO:
       return [...state, {
         text: action.text,
-        completed: false
+        completed: false,
       }];
     case COMPLETE_TODO:
       return [
         ...state.slice(0, action.index),
         Object.assign({}, state[action.index], {
-          completed: true
+          completed: true,
         }),
-        ...state.slice(action.index + 1)
+        ...state.slice(action.index + 1),
       ];
     default:
       return state;
@@ -45,7 +45,7 @@ function todos(state = [], action) {
 
 const todoApp = combineReducers({
   visibilityFilter,
-  todos
+  todos,
 });
 
 export default todoApp;

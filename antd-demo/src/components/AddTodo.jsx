@@ -1,10 +1,9 @@
 import React, { Component, PropTypes } from 'react';
-import { findDOMNode } from 'react-dom';
 import { Button, Input, Form } from 'antd';
 
 const FormItem = Form.Item;
 
-class AddTodo extends React.Component {
+class AddTodo extends Component {
   static propTypes = {
     onAddClick: PropTypes.func.isRequired,
   }
@@ -16,7 +15,7 @@ class AddTodo extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    const todoItem = this.props.form.getFieldValue("toDoItem");
+    const todoItem = this.props.form.getFieldValue('toDoItem');
     console.log('收到表单值：', todoItem );
     this.props.onAddClick(todoItem);
     this.props.form.resetFields();
@@ -27,7 +26,7 @@ class AddTodo extends React.Component {
     return (
       <Form line onSubmit={this.handleSubmit}>
 
-        <FormItem label="请输入待办事项：" labelCol={{ span:6 }} wrapperCol={{ span: 8 }}>
+        <FormItem label="请输入待办事项：" labelCol={{ span: 6 }} wrapperCol={{ span: 8 }}>
             <Input {...getFieldProps('toDoItem')} placeholder="输入待办事项" />
         </FormItem>
 
