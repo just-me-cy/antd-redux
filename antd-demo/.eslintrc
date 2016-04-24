@@ -1,3 +1,25 @@
 {
-  "extends": "eslint-config-airbnb"
+  "extends": [
+    "eslint-config-airbnb"
+  ],
+  "parser": "babel-eslint",
+  "rules": {
+    "arrow-body-style":[
+      "warn",
+      "as-needed"
+    ],
+    "no-case-declarations": [
+      "warn"
+    ],
+    "max-len": [
+      "warn",
+      120,
+      {
+        "ignoreUrls": true
+      }
+    ],
+    "react/prefer-stateless-function": [
+      "off"
+    ]
+  }
 }
