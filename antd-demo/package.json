@@ -35,7 +35,6 @@
     "dora-plugin-browser-history": "^0.1.1",
     "dora-plugin-hmr": "0.5.x",
     "dora-plugin-livereload": "0.3.x",
-    "dora-plugin-proxy": "0.6.x",
     "dora-plugin-webpack": "0.6.x",
     "dora-plugin-webpack-hmr": "^0.1.1",
     "eslint": "2.x",
