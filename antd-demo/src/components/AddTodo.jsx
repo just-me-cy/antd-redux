@@ -16,7 +16,6 @@ class AddTodo extends Component {
   handleSubmit(e) {
     e.preventDefault();
     const todoItem = this.props.form.getFieldValue('toDoItem');
-    console.log('收到表单值：', todoItem );
     this.props.onAddClick(todoItem);
     this.props.form.resetFields();
   }

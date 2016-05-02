@@ -31,7 +31,7 @@ class AppTodo extends Component {
         />
         <TodoList
           todos={this.props.visibleTodos}
-          onTodoClick={index  =>
+          onTodoClick={index =>
            dispatch(completeTodo(index))
           }
         />

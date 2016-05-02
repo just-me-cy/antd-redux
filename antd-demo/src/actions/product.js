@@ -2,61 +2,61 @@
  * action 创建函数--products
  */
 import fetch from 'isomorphic-fetch';
-import * as type from '../constant/product';
+import { createAction } from 'redux-actions';
+import { REQUEST, RECEIVE, SEARCH, ERROR, GET_PRO_BY_ID, GET_PRO_BY_CATA, SET_PROD_FILTER } from '../constant/product';
 
-export function request(searchObj) {
-  return {
-    type: type.REQUEST,
-    searchObj,
-  };
-}
+export const request = createAction(REQUEST, (searchObj) => ({
+  searchObj,
+}));
 
-export function receive(searchObj, json) {
+export const receive = createAction(RECEIVE, (json) => {
   return {
-    type: type.RECEIVE,
-    searchObj,
-    pros: json.products.map(child => child),
-    receivedAt: Date.now(),
+    pros: json.products.map((child, index) => Object.assign({}, child, { key: index })),
   };
-}
+});
 
-export function search(searchObj) {
-  return {
-    type: type.SEARCH,
-    searchObj,
-  };
-}
+export const error = createAction(ERROR, ({
+  errMsg,
+}) => ({
+  errMsg,
+}));
+
+export const search = createAction(SEARCH, (searchObj) => ({
+  searchObj,
+}));
+
+export const setVisibilityFilter = createAction(SET_PROD_FILTER, (filter) => ({
+  filter,
+}));
 
 function fetchPros(searchObj) {
   return dispatch => {
     dispatch(request(searchObj));
-    return fetch('http://rap.taobao.org/mockjsdata/2620/byCata/all')
-      .then(response => response.json())
-      .then(json => dispatch(receive(searchObj, json)));
-  };
-}
 
-export function setVisibilityFilter(filter) {
-  return {
-    type: type.SET_FILTER,
-    filter,
-  };
-}
-
-function shouldFetchPosts(state, searchObj) {
-  const posts = state.productsByQuery[searchObj];
-  if (!posts) {
-    return true;
-  } else if (posts.isFetching) {
-    return false;
-  }
-  return false;
-}
-
-export function fetchProsIfNeeded(searchObj) {
-  return (dispatch, getState) => {
-    if (shouldFetchPosts(getState().productReducer, searchObj)) {
-      return dispatch(fetchPros(searchObj));
+    let url = `${GET_PRO_BY_CATA}all`; // 初始显示所有产品
+    if (searchObj.pid) {
+      // 按id查询--只模拟了id=1
+      url = `${GET_PRO_BY_ID}${searchObj.pid}`;
+    } else if (searchObj.mainCata) {
+      // 按类别查询
+      url = `${GET_PRO_BY_CATA}${searchObj.mainCata}`;
     }
+
+    return fetch(`${url}`)
+      .then(response => response.json())
+      .then(json => {
+        if (json.hasOwnProperty('isOk')) {
+          dispatch(error(json));
+          return;
+        }
+        dispatch(receive(json));
+      });
+  };
+}
+
+
+export function getProduct(searchObj) {
+  return (dispatch) => {
+    return dispatch(fetchPros(searchObj));
   };
 }

@@ -1,65 +1,73 @@
 /**
  * Created by chenyao0913 on 2016/3/30.
  */
-
+import { Map, fromJS } from 'immutable';
+import { combineReducers } from 'redux';
 import {
-  combineReducers,
-}
-from 'redux';
-import {
-  REQUEST, RECEIVE, SEARCH, SET_FILTER, Filters,
+  REQUEST, RECEIVE, ERROR, SEARCH, SET_PROD_FILTER, Filters,
 }
 from '../constant/product';
 
+/* eslint no-console:"off"*/
+/* eslint new-cap: [2, { "capIsNew": false }] */
 const {
   SHOW_ALL,
 } = Filters;
 
 function visibilityFilter(state = SHOW_ALL, action) {
   switch (action.type) {
-    case SET_FILTER:
-      return action.filter;
+    case SET_PROD_FILTER:
+      return action.payload.filter;
     default:
       return state;
   }
 }
 
-function search(state = '', action) {
+function search(state = Map({ cata: '健康保险', pid: void 0 }), action) {
   switch (action.type) {
     case SEARCH:
-      return action.searchObj;
+      return fromJS(action.payload.searchObj);
     default:
       return state;
   }
 }
 
-function products(state = {
+function products(state = fromJS({
   isFetching: false,
   items: [],
-}, action) {
+  errMsg: '',
+}), action) {
   switch (action.type) {
     case REQUEST:
-      return Object.assign({}, state, {
-        isFetching: true,
-      });
+      return state.merge(Map({ isFetching: true, errMsg: '' }));
     case RECEIVE:
-      return Object.assign({}, state, {
+      console.log('拿到数据receive-----');
+      return state.merge(fromJS({
         isFetching: false,
-        items: action.pros,
-        lastUpdated: action.receivedAt,
-      });
+        items: action.payload.pros,
+        errMsg: '',
+      }));
+    case ERROR:
+      return state.merge(fromJS({
+        isFetching: false,
+        errMsg: action.payload.errMsg,
+        items: [],
+      }));
     default:
       return state;
   }
 }
 
-function productsByQuery(state = {}, action) {
+function productsByQuery(state = fromJS({
+  isFetching: true,
+  items: [],
+  errMsg: '',
+}), action) {
   switch (action.type) {
+    case ERROR:
     case REQUEST:
     case RECEIVE:
-      return Object.assign({}, state, {
-        [action.searchObj]: products(state[action.searchObj], action),
-      });
+      return state.merge(products(state, action));
     default:
       return state;
   }

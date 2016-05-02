@@ -19,5 +19,5 @@ $ npm run dev
 * ~~you should start server to apply data~~
 * ~~$ node server~~
 * use [rap](http://rap.taobao.org/) for mockdata
-* open your browser http://localhost:8989/
+* open your browser http://localhost:8002/
 

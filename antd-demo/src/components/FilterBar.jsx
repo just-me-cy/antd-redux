@@ -1,3 +1,6 @@
+/**
+ * 产品列表过滤组件
+ */
 import React, { Component, PropTypes } from 'react';
 import { Button, Row, Col } from 'antd';
 
@@ -13,6 +16,11 @@ export default class FilterBar extends Component {
       'SHOW_CHANGE',
       'SHOW_OUT_OF_SALE',
     ]).isRequired,
+  }
+
+  constructor(props) {
+    super(props);
+    this.renderFilter = this.renderFilter.bind(this);
   }
 
   renderFilter(filter, name) {
