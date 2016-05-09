@@ -1,44 +1,29 @@
-import { PNO_NOTICE_ADD, PNO_NOTICE_DEL, PNO_NOTICE_CHANGE, CHANGE_VISIBLE, NOTICE_EDIT } from '../constant/notice';
+import { PNO_NOTICE_ADD, PNO_NOTICE_DEL, PNO_NOTICE_SAVE, PNO_NOTICE_EDIT } from '../constant/notice';
 import { combineReducers } from 'redux';
+import { List } from 'immutable';
 
-const initialNoitces = [];
-
-const notices = (state = initialNoitces, action) => {
+const notices = (state = List(), action) => {
   switch (action.type) {
-    case PNO_NOTICE_ADD:
-      return [...state, action.payload];
+    // 新增加一行
+    case PNO_NOTICE_ADD: {
+      return state.push({ ...action.payload, index: state.size });
+    }
     case PNO_NOTICE_DEL: {
       const index = action.payload.index;
-      return [...state.slice(0, index), ...state.slice(index + 1)];
+      return state.delete(index);
     }
-    case PNO_NOTICE_CHANGE: {
-      const index = action.payload.index;
-      const stateRow = state[index];
-      return [...state.slice(0, index),
-        { ...stateRow, [action.payload.key]: action.payload.value },
-        ...state.slice(index + 1)];
+    case PNO_NOTICE_SAVE: {
+      // 保存数据
+      // debugger;
+      const index = state.findIndex((item) => (item.key === action.payload.key));
+      return state.setIn([index], { ...action.payload, editing: false });
     }
-    case NOTICE_EDIT: {
-      return
+    case PNO_NOTICE_EDIT: {
+      // 启用编辑
+      // debugger;
+      const index = state.findIndex((item) => (item.key === action.payload.key));
+      return state.setIn([index], { ...action.payload, editing: true });
     }
-    default:
-      return state;
-  }
-};
-
-const isVisible = (state = false, action) => {
-  switch (action.type) {
-    case CHANGE_VISIBLE:
-      return action.payload.isVisible;
-    default:
-      return state;
-  }
-};
-
-const editItem = (state = { title: '', content: '', power: 1 }, action) => {
-  switch (action.type) {
-    case NOTICE_EDIT:
-      return [...state.notices, ...action.payload];
     default:
       return state;
   }
@@ -46,8 +31,6 @@ const editItem = (state = { title: '', content: '', power: 1 }, action) => {
 
 const noticeReducer = combineReducers({
   notices,
-  isVisible,
-  editItem,
 });
 
 export default noticeReducer;

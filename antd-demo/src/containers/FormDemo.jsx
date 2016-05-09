@@ -4,7 +4,7 @@ import Box from '../Components/Box';
 import Notice from '../Components/Notice';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { onNoticeAdd, onNoticeDel, onNoticeChange, changeVisible, noticeEdit } from '../actions/notice';
+import { onNoticeAdd, onNoticeDel, onNoticeSave, onNoticeEdit } from '../actions/notice';
 
 const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
@@ -12,9 +12,6 @@ const Option = Select.Option;
 const InputGroup = Input.Group;
 
 class FormDemo extends React.Component {
-  static propTypes = {
-    // form: PropTypes.object.isReuired,
-  }
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -22,7 +19,7 @@ class FormDemo extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    // console.log(this.props.form.getFieldInstance('mytable'));
+    console.log(this.props.form.getFieldInstance('mytable'));
     this.props.form.validateFieldsAndScroll(['primeNumber'],(errors, values) => {
       if (!!errors) {
         console.log('Errors in form!!!', errors, values);
@@ -31,7 +28,6 @@ class FormDemo extends React.Component {
       console.log('Submit!!!');
       console.log(values);
     });
-    // console.log(this.props.form.getFieldsValue());
   }
 
   checkBirthday(rule, value, callback) {
@@ -63,42 +59,10 @@ class FormDemo extends React.Component {
 
     const { getFieldProps } = this.props.form;
 
-    // const selectProps = getFieldProps('select', {
-    //   rules: [
-    //     { required: true, message: '请选择您的国籍' },
-    //   ],
-    // });
-
-    // const multiSelectProps = getFieldProps('multiSelect', {
-    //   rules: [
-    //     { required: true, message: '请选择您喜欢的颜色', type: 'array' },
-    //   ],
-    // });
-
-    // const radioProps = getFieldProps('radio', {
-    //   rules: [
-    //     { required: true, message: '请选择您的性别' },
-    //   ],
-    // });
-
-    // const birthdayProps = getFieldProps('birthday', {
-    //   rules: [
-    //     {
-    //       required: true,
-    //       type: 'date',
-    //       message: '你的生日是什么呢?',
-    //     }, {
-    //       validator: this.checkBirthday,
-    //     },
-    //   ],
-    // });
-
     const primeNumberProps = getFieldProps('primeNumber', {
       rules: [{ validator: this.checkPrime }],
     });
-    // const addressProps = getFieldProps('address', {
-    //   rules: [{ required: true, type: 'array' }],
-    // });
+  
     const formItemLayout = {
       labelCol: { span: 3 },
       wrapperCol: { span: 18 },
@@ -130,11 +94,9 @@ class FormDemo extends React.Component {
 }
 
 function mapStateToProps(state) {
+  // debugger;
   return {
     notices: state.noticeReducer.notices,
-    isVisible: state.noticeReducer.isVisible,
-    editItem: state.noticeReducer.editItem,
-    // formSubmit: formSubmitSelector(state),
   };
 }
 
@@ -142,10 +104,8 @@ function mapDispatchToProps(dispatch) {
   return {
     onNoticeAdd: bindActionCreators(onNoticeAdd, dispatch),
     onNoticeDel: bindActionCreators(onNoticeDel, dispatch),
-    onNoticeChange: bindActionCreators(onNoticeChange, dispatch),
-    changeVisible: bindActionCreators(changeVisible, dispatch),
-    noticeEdit: bindActionCreators(noticeEdit, dispatch),
-    // onSubmit: bindActionCreators(onSubmit, dispatch),
+    onNoticeSave: bindActionCreators(onNoticeSave, dispatch),
+    onNoticeEdit: bindActionCreators(onNoticeEdit, dispatch),
   };
 }
 

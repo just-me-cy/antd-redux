@@ -2,4 +2,5 @@ export const PNO_NOTICE_ADD = 'PNO_NOTICE_ADD';
 export const PNO_NOTICE_DEL = 'PNO_NOTICE_DEL';
 export const PNO_NOTICE_CHANGE = 'PNO_NOTICE_CHANGE';
 export const CHANGE_VISIBLE = 'CHANGE_VISIBLE';
-export const NOTICE_EDIT = 'NOTICE_EDIT';
+export const PNO_NOTICE_EDIT = 'PNO_NOTICE_EDIT';
+export const PNO_NOTICE_SAVE = 'PNO_NOTICE_SAVE';
