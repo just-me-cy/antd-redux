@@ -19,8 +19,7 @@ class FormDemo extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    console.log(this.props.form.getFieldInstance('mytable'));
-    this.props.form.validateFieldsAndScroll(['primeNumber'],(errors, values) => {
+    this.props.form.validateFieldsAndScroll((errors, values) => {
       if (!!errors) {
         console.log('Errors in form!!!', errors, values);
         return;
@@ -69,19 +68,18 @@ class FormDemo extends React.Component {
     };
 
     return (
-      <Form horizontal>
+      <Form horizontal form={this.props.form}>
         <Box title="投保须知">
           <FormItem
             {...formItemLayout}
             label="投保须知编辑："
-            required
           >
-              <InputGroup>
-                <InputNumber {...primeNumberProps} min={8} max={12} />
-                <Notice {...getFieldProps('mytable')} {...this.props} />
-              </InputGroup>
+             <InputNumber {...primeNumberProps} min={8} max={12} />
           </FormItem>
         </Box>
+        
+        <Notice {...getFieldProps('mytable')} {...this.props} />
+        
         <FormItem
           wrapperCol={{ span: 12, offset: 7 }}
         >

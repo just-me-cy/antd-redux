@@ -17,6 +17,7 @@ class Notice extends React.Component {
   constructor(props) {
     super(props);
     this.onSubmit = this.onSubmit.bind(this);
+    // this.titleExists = this.titleExists.bind(this);
   }
 
   onSubmit() {
@@ -34,21 +35,21 @@ class Notice extends React.Component {
     // });
   }
 
-  titleExists(rule, value, callback) {
-    if (!value) {
-      callback();
-    } else {
-      setTimeout(() => {
-        if (value === 'ab') {
-          callback([new Error('该标题已被占用。')]);
-        } else {
-          callback();
-        }
-      }, 800);
-    }
+  onSave() {
+    // 验证
+    this.props.form.validateFieldsAndScroll(['title', 'content'], (errors, values) => {
+      if (errors) {
+         console.log('验证', values, errors);
+         return;
+      }
+      console.log('提交');
+      // this.props.onNoticeSave({ ...record, index });
+    });
   }
+
   render() {
     const { onNoticeAdd, onNoticeSave, onNoticeDel, onNoticeEdit, notices } = this.props;
+    const { getFieldProps, validateFieldsAndScroll } = this.props.form;
 
     const columns = [{
       key: 'title',
@@ -60,11 +61,31 @@ class Notice extends React.Component {
         if (record.editing) {
           // 编辑状态
           return (
-              <Input defaultValue={record.title} onBlur={(e) => {
-                console.log(e.target.value);
-                record.title = e.target.value;
-              }}
+            <FormItem
+              required
+            >
+              <Input
+                onBlur={(e) => {
+                  record.title = e.target.value;
+                }}
+                {...getFieldProps(record.key + '-title', {
+                  initialValue: record.title,
+                  rules: [
+                    { required: true, min: 1, message: '标题少为 1个字符' },
+                    { validator: (rule, value, callback) => {
+                      if (!value) {
+                        callback();
+                      } else if (value === 'aaa') {
+                        callback([new Error('该标题已被占用。')]);
+                      } else {
+                        callback();
+                      }
+                    },
+                    },
+                  ],
+                })}
               />
+            </FormItem>
             );
         }
           // 非编辑
@@ -77,10 +98,32 @@ class Notice extends React.Component {
       render(text, record, index) {
         if (record.editing) {
           return (
-            <Input type="textarea" defaultValue={record.content} onBlur={(e) => {
-              record.content = e.target.value;
-            }}
+            <FormItem
+              required
+            >
+            <Input
+              type="textarea"
+              onBlur={(e) => {
+                record.content = e.target.value;
+              }}
+              {...getFieldProps(record.key + '-content', {
+                initialValue: record.content,
+                rules: [
+                  { required: true, min: 2, message: '内容至少为 2个字符' },
+                  { validator: (rule, value, callback) => {
+                    if (!value) {
+                      callback();
+                    } else if (value === 'aaa') {
+                      callback([new Error('该标题已被占用。')]);
+                    } else {
+                      callback();
+                    }
+                  },
+                  },
+                ],
+              })}
             />
+            </FormItem>
           );
         }
         return text;
@@ -127,8 +170,16 @@ class Notice extends React.Component {
             {!record.editing ||
             <Button type="ghost" size="small" onClick={() => {
               console.log('##保存', record);
-              onNoticeSave({ ...record, index });
-            }} style={{ marginRight: 5 }}
+              validateFieldsAndScroll([record.key + '-title', record.key + '-content'], (errors, values) => {
+                if (errors) {
+                   console.log('验证', values, errors);
+                   return;
+                }
+                onNoticeSave({ ...record, index });
+              });
+            }
+          }
+              style={{ marginRight: 5 }}
             >
               保存
             </Button>}
@@ -158,4 +209,6 @@ class Notice extends React.Component {
     );
   }
 }
+
+Notice = Form.create({})(Notice);
 export default Notice;
