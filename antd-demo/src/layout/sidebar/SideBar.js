@@ -33,7 +33,6 @@ class Sidebar extends React.Component {
           >
             <Menu.Item key="showDatePicker">showDatePicker</Menu.Item>
             <Menu.Item key="myForm">myForm</Menu.Item>
-            <Menu.Item key="showEditableTable">可编辑表格</Menu.Item>
           </SubMenu>
           <SubMenu
             key="redux"
@@ -41,8 +40,8 @@ class Sidebar extends React.Component {
           >
             <Menu.Item key="appTodo">appTodo</Menu.Item>
             <Menu.Item key="reddit">reddit</Menu.Item>
-            <Menu.Item key="product">product</Menu.Item>
-            <Menu.Item key="notice">notice</Menu.Item>
+            <Menu.Item key="product">产品列表</Menu.Item>
+            <Menu.Item key="notice">可编辑表格</Menu.Item>
           </SubMenu>
         </Menu>
       </aside>

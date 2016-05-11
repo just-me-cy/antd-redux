@@ -1,50 +1,18 @@
 import React, { PropTypes } from 'react';
-import { Table, Icon, Input, InputNumber, Button, Row, Col, Form, Modal } from 'antd';
+import { Table, Icon, Input, InputNumber, Button, Row, Col, Form } from 'antd';
 import Box from '../components/Box';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 
 const FormItem = Form.Item;
 
-
 class Notice extends React.Component {
   static propTypes = {
+    form: PropTypes.object.isRequired,
     onNoticeAdd: PropTypes.func.isRequired,
     onNoticeSave: PropTypes.func.isRequired,
     onNoticeDel: PropTypes.func.isRequired,
     onNoticeEdit: PropTypes.func.isRequired,
     notices: ImmutablePropTypes.list.isRequired,
-  }
-  constructor(props) {
-    super(props);
-    this.onSubmit = this.onSubmit.bind(this);
-    // this.titleExists = this.titleExists.bind(this);
-  }
-
-  onSubmit() {
-    console.log('提交');
-    // this.props.form.validateFieldsAndScroll(['title', 'content', 'power'], (errors, value) => {
-    //   if (!!errors) {
-    //     console.log('pop error', value);
-    //     this.props.form.resetFields();
-    //     return;
-    //   }
-    //   console.log('ok--', value);
-    //   this.props.changeVisible({ isVisible: false });
-    //   this.props.onNoticeAdd({ ...value, index: this.props.notices.length });
-    //   this.props.form.resetFields();
-    // });
-  }
-
-  onSave() {
-    // 验证
-    this.props.form.validateFieldsAndScroll(['title', 'content'], (errors, values) => {
-      if (errors) {
-         console.log('验证', values, errors);
-         return;
-      }
-      console.log('提交');
-      // this.props.onNoticeSave({ ...record, index });
-    });
   }
 
   render() {
@@ -56,8 +24,7 @@ class Notice extends React.Component {
       title: '标题',
       dataIndex: 'title',
       width: 160,
-      render(text, record, index) {
-        console.log('##', record, index);
+      render(text, record) {
         if (record.editing) {
           // 编辑状态
           return (
@@ -65,10 +32,7 @@ class Notice extends React.Component {
               required
             >
               <Input
-                onBlur={(e) => {
-                  record.title = e.target.value;
-                }}
-                {...getFieldProps(record.key + '-title', {
+                {...getFieldProps(`${record.key}-title`, {
                   initialValue: record.title,
                   rules: [
                     { required: true, min: 1, message: '标题少为 1个字符' },
@@ -88,14 +52,14 @@ class Notice extends React.Component {
             </FormItem>
             );
         }
-          // 非编辑
+        // 非编辑
         return text;
       },
     }, {
       key: 'content',
       title: '内容',
       dataIndex: 'content',
-      render(text, record, index) {
+      render(text, record) {
         if (record.editing) {
           return (
             <FormItem
@@ -103,10 +67,7 @@ class Notice extends React.Component {
             >
             <Input
               type="textarea"
-              onBlur={(e) => {
-                record.content = e.target.value;
-              }}
-              {...getFieldProps(record.key + '-content', {
+              {...getFieldProps(`${record.key}-content`, {
                 initialValue: record.content,
                 rules: [
                   { required: true, min: 2, message: '内容至少为 2个字符' },
@@ -133,12 +94,15 @@ class Notice extends React.Component {
       title: '权重',
       dataIndex: 'power',
       width: 100,
-      render(text, record, index) {
+      render(text, record) {
         if (record.editing) {
           return (
-            <InputNumber min={1} max={99} defaultValue={record.power} onBlur={(e) => {
-              record.power = e.target.value;
-            }}
+            <InputNumber
+              min={1}
+              max={10}
+              {...getFieldProps(`${record.key}-power`, {
+                initialValue: record.power,
+              })}
             />
           );
         }
@@ -149,36 +113,47 @@ class Notice extends React.Component {
       key: 'operation',
       title: '操作',
       width: 150,
-      render(text, record, index) {
+      render(text, record) {
         return (
           <span>
-            <Button type="ghost" size="small" onClick={() => {
-              onNoticeDel({ index });
-            }} style={{ marginRight: 5 }}
+            <Button
+              type="ghost"
+              size="small"
+              onClick={() => {
+                onNoticeDel({ key: record.key });
+              }}
+              style={{ marginRight: 5 }}
             >
               删除
             </Button>
             {record.editing ||
-            <Button type="ghost" size="small" onClick={() => {
-              console.log('##record', record);
-              onNoticeEdit({ index, ...record });
-            }} style={{ marginRight: 5 }}
+            <Button
+              type="ghost"
+              size="small"
+              onClick={() => {
+                onNoticeEdit({ ...record });
+              }}
+              style={{ marginRight: 5 }}
             >
               修改
             </Button>}
 
             {!record.editing ||
-            <Button type="ghost" size="small" onClick={() => {
-              console.log('##保存', record);
-              validateFieldsAndScroll([record.key + '-title', record.key + '-content'], (errors, values) => {
-                if (errors) {
-                   console.log('验证', values, errors);
-                   return;
-                }
-                onNoticeSave({ ...record, index });
-              });
-            }
-          }
+            <Button
+              type="ghost"
+              size="small"
+              onClick={() => {
+                const rowKey = record.key;
+                validateFieldsAndScroll([`${rowKey}-title`, `${rowKey}-content`, `${rowKey}-power`],
+                  (errors, values) => {
+                    if (errors) {
+                      console.log('cell填写有误', values, errors);
+                      return;
+                    }
+                    // dispatch编辑后的数据
+                    onNoticeSave({ key: rowKey, title: values[`${rowKey}-title`], content: values[`${rowKey}-content`], power: values[`${rowKey}-power`] });
+                  });
+              }}
               style={{ marginRight: 5 }}
             >
               保存

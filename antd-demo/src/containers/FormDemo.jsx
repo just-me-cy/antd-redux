@@ -1,24 +1,29 @@
+/**
+ * Created by chenyao on 2016/5/6.
+ */
 import React, { PropTypes } from 'react';
-import { Button, Form, Select, Radio, Checkbox, Cascader, InputNumber, DatePicker, Input } from 'antd';
+import { Button, Form, Input } from 'antd';
 import Box from '../Components/Box';
 import Notice from '../Components/Notice';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { onNoticeAdd, onNoticeDel, onNoticeSave, onNoticeEdit } from '../actions/notice';
 
-const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
-const Option = Select.Option;
-const InputGroup = Input.Group;
 
 class FormDemo extends React.Component {
+  static propTypes = {
+    form: PropTypes.object.isRequired,
+  }
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleReset = this.handleReset.bind(this);
   }
 
   handleSubmit(e) {
     e.preventDefault();
+    // console.log('%%%', this.props.notices.toJS());
     this.props.form.validateFieldsAndScroll((errors, values) => {
       if (!!errors) {
         console.log('Errors in form!!!', errors, values);
@@ -29,57 +34,32 @@ class FormDemo extends React.Component {
     });
   }
 
-  checkBirthday(rule, value, callback) {
-    if (value && value.getTime() >= Date.now()) {
-      callback(new Error('你不可能在未来出生吧!'));
-    } else {
-      callback();
-    }
+  handleReset(e) {
+    e.preventDefault();
+    this.props.form.resetFields();
   }
-
-  checkPrime(rule, value, callback) {
-    if (value !== 11) {
-      callback(new Error('8~12之间的质数明明是11啊!'));
-    } else {
-      callback();
-    }
-  }
-
 
   render() {
-    const address = [{
-      value: 'zhejiang',
-      label: '浙江',
-      children: [{
-        value: 'hangzhou',
-        label: '杭州',
-      }],
-    }];
-
     const { getFieldProps } = this.props.form;
-
-    const primeNumberProps = getFieldProps('primeNumber', {
-      rules: [{ validator: this.checkPrime }],
+    const nameProps = getFieldProps('name', {
+      rules: [{ required: true, message: '请输入姓名' }],
     });
-  
     const formItemLayout = {
-      labelCol: { span: 3 },
-      wrapperCol: { span: 18 },
+      labelCol: { span: 2 },
+      wrapperCol: { span: 4 },
     };
 
     return (
       <Form horizontal form={this.props.form}>
-        <Box title="投保须知">
+        <Box title="表格填写">
           <FormItem
             {...formItemLayout}
-            label="投保须知编辑："
+            label="姓名："
           >
-             <InputNumber {...primeNumberProps} min={8} max={12} />
+             <Input {...nameProps} />
           </FormItem>
         </Box>
-        
-        <Notice {...getFieldProps('mytable')} {...this.props} />
-        
+        <Notice {...this.props} />
         <FormItem
           wrapperCol={{ span: 12, offset: 7 }}
         >
@@ -94,7 +74,7 @@ class FormDemo extends React.Component {
 function mapStateToProps(state) {
   // debugger;
   return {
-    notices: state.noticeReducer.notices,
+    notices: state.notices,
   };
 }
 

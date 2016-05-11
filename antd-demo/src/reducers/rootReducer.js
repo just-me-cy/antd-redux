@@ -5,13 +5,13 @@ import user from './user';
 import product from './product';
 import redditReducer from './reddit';
 import todoReducer from './todo';
-import noticeReducer from './notice';
+import notices from './notice';
 
 export const rootReducer = combineReducers({
   menu,
   user,
   product,
-  noticeReducer,
+  notices,
   redditReducer,
   todoReducer,
   router,
