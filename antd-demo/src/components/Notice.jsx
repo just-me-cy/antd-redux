@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import { Table, Icon, Input, InputNumber, Button, Row, Col, Form } from 'antd';
 import Box from '../components/Box';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+import validateRules from '../common/validateRules';
 
 const FormItem = Form.Item;
 
@@ -14,41 +15,38 @@ class Notice extends React.Component {
     onNoticeEdit: PropTypes.func.isRequired,
     notices: ImmutablePropTypes.list.isRequired,
   }
-
   render() {
     const { onNoticeAdd, onNoticeSave, onNoticeDel, onNoticeEdit, notices } = this.props;
-    const { getFieldProps, validateFieldsAndScroll } = this.props.form;
+    const { getFieldProps, validateFieldsAndScroll } = this.props.form;  
+    const changeHandle = () => {
+      // 可以用来处理dipatch(action)
+      console.log('change111');
+    };
+    const setProps = () => (id, initVal, rules = {}) => {
+      let compositeRules = [];
+      rules.baseRules && rules.baseRules.map(item => compositeRules.push(validateRules.baseRules[item]));
+      rules.funcs && rules.funcs.map(item => compositeRules.push({ validator: validateRules[item] }));
 
+      return getFieldProps(id, {
+        initialValue: initVal,
+        rules: compositeRules,
+        onChange: changeHandle,
+      });
+    };
     const columns = [{
       key: 'title',
-      title: '标题',
+      title: '邮政编码',
       dataIndex: 'title',
       width: 160,
       render(text, record) {
         if (record.editing) {
           // 编辑状态
+          const cellId = `${record.key}-title`;
           return (
             <FormItem
               required
             >
-              <Input
-                {...getFieldProps(`${record.key}-title`, {
-                  initialValue: record.title,
-                  rules: [
-                    { required: true, min: 1, message: '标题少为 1个字符' },
-                    { validator: (rule, value, callback) => {
-                      if (!value) {
-                        callback();
-                      } else if (value === 'aaa') {
-                        callback([new Error('该标题已被占用。')]);
-                      } else {
-                        callback();
-                      }
-                    },
-                    },
-                  ],
-                })}
-              />
+            <Input {...setProps()(cellId, record.title, { baseRules: ['required'], funcs: ['postcode'] })} />
             </FormItem>
             );
         }
@@ -60,30 +58,13 @@ class Notice extends React.Component {
       title: '内容',
       dataIndex: 'content',
       render(text, record) {
+        const cellId = `${record.key}-content`;
         if (record.editing) {
           return (
             <FormItem
               required
             >
-            <Input
-              type="textarea"
-              {...getFieldProps(`${record.key}-content`, {
-                initialValue: record.content,
-                rules: [
-                  { required: true, min: 2, message: '内容至少为 2个字符' },
-                  { validator: (rule, value, callback) => {
-                    if (!value) {
-                      callback();
-                    } else if (value === 'aaa') {
-                      callback([new Error('该标题已被占用。')]);
-                    } else {
-                      callback();
-                    }
-                  },
-                  },
-                ],
-              })}
-            />
+            <Input {...setProps()(cellId, record.content, { baseRules: ['required'], funcs: ['userExists'] })} type="textarea" />
             </FormItem>
           );
         }
@@ -95,15 +76,10 @@ class Notice extends React.Component {
       dataIndex: 'power',
       width: 100,
       render(text, record) {
+        const cellId = `${record.key}-power`;
         if (record.editing) {
           return (
-            <InputNumber
-              min={1}
-              max={10}
-              {...getFieldProps(`${record.key}-power`, {
-                initialValue: record.power,
-              })}
-            />
+            <InputNumber min={1} max={10} {...setProps()(cellId, record.power)} />
           );
         }
         return text;
