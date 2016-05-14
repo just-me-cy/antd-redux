@@ -2,7 +2,8 @@ import React, { PropTypes } from 'react';
 import { Table, Icon, Input, InputNumber, Button, Row, Col, Form } from 'antd';
 import Box from '../components/Box';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import validateRules from '../common/validateRules';
+// import validateRules from '../common/validateRules';
+import { setValidation } from '../common/setValidation';
 
 const FormItem = Form.Item;
 
@@ -17,22 +18,7 @@ class Notice extends React.Component {
   }
   render() {
     const { onNoticeAdd, onNoticeSave, onNoticeDel, onNoticeEdit, notices } = this.props;
-    const { getFieldProps, validateFieldsAndScroll } = this.props.form;  
-    const changeHandle = () => {
-      // 可以用来处理dipatch(action)
-      console.log('change111');
-    };
-    const setProps = () => (id, initVal, rules = {}) => {
-      let compositeRules = [];
-      rules.baseRules && rules.baseRules.map(item => compositeRules.push(validateRules.baseRules[item]));
-      rules.funcs && rules.funcs.map(item => compositeRules.push({ validator: validateRules[item] }));
-
-      return getFieldProps(id, {
-        initialValue: initVal,
-        rules: compositeRules,
-        onChange: changeHandle,
-      });
-    };
+    const { getFieldProps, validateFieldsAndScroll } = this.props.form;
     const columns = [{
       key: 'title',
       title: '邮政编码',
@@ -43,15 +29,13 @@ class Notice extends React.Component {
           // 编辑状态
           const cellId = `${record.key}-title`;
           return (
-            <FormItem
-              required
-            >
-            <Input {...setProps()(cellId, record.title, { baseRules: ['required'], funcs: ['postcode'] })} />
+            <FormItem>
+              <Input {...setValidation(getFieldProps)(cellId, record.title, { baseRules: ['required'], funcs: ['postcode'] })} />
             </FormItem>
             );
         }
         // 非编辑
-        return text;
+        return (<span style={{ cursor: 'pointer' }} onDoubleClick={ () => { onNoticeEdit({ ...record }); }}>{text}</span>);
       },
     }, {
       key: 'content',
@@ -61,14 +45,12 @@ class Notice extends React.Component {
         const cellId = `${record.key}-content`;
         if (record.editing) {
           return (
-            <FormItem
-              required
-            >
-            <Input {...setProps()(cellId, record.content, { baseRules: ['required'], funcs: ['userExists'] })} type="textarea" />
+            <FormItem>
+              <Input {...setValidation(getFieldProps)(cellId, record.content, { baseRules: ['required'], funcs: ['userExists'] })} type="textarea" />
             </FormItem>
           );
         }
-        return text;
+        return (<span style={{ cursor: 'pointer' }} onDoubleClick={ () => { onNoticeEdit({ ...record }); }}>{text}</span>);
       },
     }, {
       key: 'power',
@@ -79,10 +61,10 @@ class Notice extends React.Component {
         const cellId = `${record.key}-power`;
         if (record.editing) {
           return (
-            <InputNumber min={1} max={10} {...setProps()(cellId, record.power)} />
+            <InputNumber min={1} max={10} {...setValidation(getFieldProps)(cellId, record.power)} />
           );
         }
-        return text;
+        return (<span style={{ cursor: 'pointer' }} onDoubleClick={ () => { onNoticeEdit({ ...record }); }}>{text}</span>);
       },
       sorter: (a, b) => (a.power || 0) - (b.power || 0),
     }, {
