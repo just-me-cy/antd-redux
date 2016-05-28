@@ -1,0 +1,66 @@
+{
+  "name": "antd-redux",
+  "version": "1.0.0",
+  "description": "A study demo for antd and redux",
+  "entry": {
+    "index": "./src/entry/index.jsx"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/just-me-cy/antd-redux.git"
+  },
+  "keywords": [
+    "redux",
+    "antd"
+  ],
+  "author": "chenyao",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/just-me-cy/antd-redux/issues"
+  },
+  "homepage": "https://github.com/just-me-cy/antd-redux#readme",
+  "devDependencies": {
+    "antd": "~1.0.0",
+    "atool-build": "0.7.x",
+    "babel-plugin-antd": "0.4.x",
+    "history": "^2.1.1",
+    "immutable": "^3.8.1",
+    "isomorphic-fetch": "^2.2.1",
+    "lodash": "^4.12.0",
+    "react": "^15.0.2",
+    "react-dom": "^15.0.2",
+    "react-immutable-proptypes": "^1.7.1",
+    "react-redux": "^4.4.5",
+    "react-router": "^2.4.0",
+    "react-router-redux": "^4.0.4",
+    "redux": "^3.5.2",
+    "redux-actions": "^0.9.1",
+    "redux-thunk": "^2.1.0",
+    "reselect": "^2.3.0"
+  },
+  "dependencies": {
+    "babel-eslint": "^6.0.0",
+    "babel-plugin-lodash": "^3.1.4",
+    "dora": "0.3.x",
+    "dora-plugin-browser-history": "^0.1.1",
+    "dora-plugin-hmr": "0.6.x",
+    "dora-plugin-livereload": "0.3.x",
+    "dora-plugin-webpack": "0.6.x",
+    "dora-plugin-webpack-hmr": "0.1.x",
+    "eslint": "2.x",
+    "eslint-config-airbnb": "6.x",
+    "eslint-plugin-react": "4.x",
+    "pre-commit": "^1.1.2",
+    "redbox-react": "^1.2.2",
+    "redux-logger": "^2.6.1"
+  },
+  "scripts": {
+    "start": "npm run dev ",
+    "dev": "dora -p 8002 --plugins webpack,webpack-hmr,livereload?enableJs=false,browser-history?index=/index.html",
+    "lint": "eslint --ext .js,.jsx src",
+    "build": "atool-build -o ./dist"
+  },
+  "pre-commit": [
+    "lint"
+  ]
+}
