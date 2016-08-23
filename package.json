@@ -19,10 +19,8 @@
     "url": "https://github.com/just-me-cy/antd-redux/issues"
   },
   "homepage": "https://github.com/just-me-cy/antd-redux#readme",
-  "devDependencies": {
+  "dependencies": {
     "antd": "~1.0.0",
-    "atool-build": "0.7.x",
-    "babel-plugin-antd": "0.4.x",
     "history": "^2.1.1",
     "immutable": "^3.8.1",
     "isomorphic-fetch": "^2.2.1",
@@ -38,8 +36,10 @@
     "redux-thunk": "^2.1.0",
     "reselect": "^2.3.0"
   },
-  "dependencies": {
+  "devDependencies": {
+    "atool-build": "0.7.x",
     "babel-eslint": "^6.0.0",
+    "babel-plugin-antd": "0.4.x",
     "babel-plugin-lodash": "^3.1.4",
     "dora": "0.3.x",
     "dora-plugin-browser-history": "^0.1.1",
@@ -47,6 +47,7 @@
     "dora-plugin-livereload": "0.3.x",
     "dora-plugin-webpack": "0.6.x",
     "dora-plugin-webpack-hmr": "0.1.x",
+    "es3ify-loader": "^0.2.0",
     "eslint": "2.x",
     "eslint-config-airbnb": "6.x",
     "eslint-plugin-react": "4.x",
